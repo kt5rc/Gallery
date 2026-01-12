@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { GalleryItem } from "@/lib/types";
 
 type ImageModalProps = {
@@ -80,17 +81,20 @@ export default function ImageModal({ item, onClose, isFavorite, onToggleFavorite
 
         <div className="mt-6 grid gap-6 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
           <div className="overflow-hidden rounded-2xl border border-line bg-slate/70">
-            <div className="aspect-[4/5] w-full">
+            <div className="relative aspect-[4/5] w-full">
               {showPlaceholder ? (
                 <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate to-ink text-xs text-haze">
                   No image
                 </div>
               ) : (
-                <img
+                <Image
                   src={item.src}
                   alt={item.title ?? "Gallery image"}
-                  className="h-full w-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 60vw"
+                  className="object-cover"
                   onError={() => setHasError(true)}
+                  priority
                 />
               )}
             </div>

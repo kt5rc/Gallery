@@ -50,8 +50,29 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
       return;
     }
     const handleKey = (event: KeyboardEvent) => {
+      // Close modal on Escape
       if (event.key === "Escape") {
         setActiveItem(null);
+        return;
+      }
+
+      // Navigate to previous/next image with arrow keys
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        const currentIndex = filteredItems.findIndex((item) => item.id === activeItem.id);
+        if (currentIndex === -1) return;
+
+        if (event.key === "ArrowLeft" && currentIndex > 0) {
+          setActiveItem(filteredItems[currentIndex - 1]);
+        } else if (event.key === "ArrowRight" && currentIndex < filteredItems.length - 1) {
+          setActiveItem(filteredItems[currentIndex + 1]);
+        }
+        return;
+      }
+
+      // Toggle favorite with F key
+      if (event.key === "f" || event.key === "F") {
+        event.preventDefault();
+        toggleFavorite(activeItem.id);
       }
     };
     window.addEventListener("keydown", handleKey);
@@ -60,7 +81,7 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
       window.removeEventListener("keydown", handleKey);
       document.body.style.overflow = "";
     };
-  }, [activeItem]);
+  }, [activeItem, filteredItems]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>

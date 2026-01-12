@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { GalleryItem } from "@/lib/types";
 
 type ImageCardProps = {
@@ -21,17 +22,18 @@ export default function ImageCard({ item, onSelect, isFavorite, onToggleFavorite
       className="group flex h-full flex-col gap-3 rounded-2xl border border-line bg-slate/70 p-3 text-left transition hover:border-mist"
     >
       <div className="relative overflow-hidden rounded-xl bg-ink/70">
-        <div className="aspect-[4/5] w-full">
+        <div className="relative aspect-[4/5] w-full">
           {showPlaceholder ? (
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate to-ink text-xs text-haze">
               No image
             </div>
           ) : (
-            <img
+            <Image
               src={item.src}
               alt={item.title ?? "Gallery image"}
-              className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-              loading="lazy"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition duration-300 group-hover:scale-[1.02]"
               onError={() => setHasError(true)}
             />
           )}
